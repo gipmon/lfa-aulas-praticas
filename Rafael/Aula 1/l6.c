@@ -48,6 +48,10 @@ bool M_6(char *u){
 				}else if(u[j]=='a'){
 					a_found++;
 				}
+				if(j+1==length){ 
+				// para o caso de existir apenas um b e não encontrar o segundo
+					return true;
+				}	
 			}
 		}
 	}
