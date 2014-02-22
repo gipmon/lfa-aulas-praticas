@@ -26,14 +26,15 @@ int main(int argc,char* argv[]){
 bool M2(char* u){
 	char cond = 'b';
 	int i;
+	unsigned long len = strlen(u);
 
-	for(i = 0; i<strlen(u); i++){
+	for(i = 0; i<len; i++){
 		if(u[i] == cond){
 			int j;
 			char prev = u[i+1];
-			for(j = i+1; j<strlen(u); j++){
+			for(j = i+1; j<len; j++){
 				if(u[j] == cond){
-					char sub[strlen(u)-j];
+					char sub[len-j];
 					strcpy(sub, u+j);
 					if(M2(sub)){
 						return true;
@@ -41,9 +42,16 @@ bool M2(char* u){
 						return false;
 				}
 				if(prev == u[j]){
+				}else{
+					int b, k;
+					for(k = j; k<len; k++){
+						if(u[k] == 'b') b++;
+					}
+					if(b > 0){
+						return false;
+					} else	return true;
 
-				}else
-					return false;
+				}
 			}
 		}
 	}
