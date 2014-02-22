@@ -37,24 +37,16 @@ bool M_6(char *u){
 			c_found = 0;
 			a_found = 0;
 			for(j=i+1; j<length; j++){
-				if(u[j]=='b' && ((c_found>=0 && a_found==0) || (a_found>=0 && c_found==0))){
-					return true;
-				}else if(u[j]=='c' && a_found!=0){
-					break;
-				}else if(u[j]=='a' && c_found!=0){
-					break;
+				if(u[j]=='b' && !((c_found>=0 && a_found==0) || (a_found>=0 && c_found==0))){
+					return false;
 				}else if(u[j]=='c'){
 					c_found++;
 				}else if(u[j]=='a'){
 					a_found++;
 				}
-				if(j+1==length){ 
-				// para o caso de existir apenas um b e não encontrar o segundo
-					return true;
-				}	
 			}
 		}
 	}
 
-	return false;
+	return true;
 }
