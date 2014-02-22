@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-bool M_1(char *u);
+bool M_4(char *u);
 
 int main(int argc, char* argv[])
 {
@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; i++)
     {
     	if(strlen(argv[i]) == strspn(argv[i],"abc")){
-    		if(M_1(argv[i])){
+    		if(M_4(argv[i])){
     			printf("A %dº palavra pertence à linguagem!!\n",i);
     		}
     		else{
@@ -30,17 +30,25 @@ int main(int argc, char* argv[])
 
 }
 
-bool M_1(char *u){
-
-	int len = strlen(u);
-	int i;
-	for (i = len; i >= 2; i--)
-	{
-		if(u[i] == u[i-1]){
-			if (u[i-1] == u[i-2]){
-				return true;
-			}
-		}
-	}
-	return false;
+bool M_4(char *u){
+    int b = 0;
+    int a = 0;
+    int len = strlen(u);
+    int i;
+    for (i = 0; i < len; i++)
+    {
+        if(u[i] == 'b'){
+            b++;
+        }
+        if(u[i] == 'a'){
+            a++;
+        }
+    }
+    if(b==0){
+        return true;
+    }
+    if(a%2==0){
+        return true;
+    }
+    return false;
 }
