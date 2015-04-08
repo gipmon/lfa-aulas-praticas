@@ -1,3 +1,4 @@
+/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,8 +21,8 @@ int main(int argc, char* argv[]){
 					printf("M6 :: Result for \"%s\": belongs to L6!\n", argv[i]);
 				}else{
 					printf("M6 :: Result for \"%s\": doesn't belong to L6!\n", argv[i]);
-				}	
-			} 
+				}
+			}
 		}
 	}
 	return 0;
@@ -31,7 +32,7 @@ bool M_6(char *u){
 	int c_found = 0; // number of "c" found
 	int a_found = 0; // number of "a" found
 	int i, j, length = strlen(u); // length da palavra passada como argumento
-	
+
 	for(i = 0; i<length; i++){
 		if(u[i]=='b'){
 			c_found = 0;

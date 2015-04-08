@@ -1,3 +1,4 @@
+/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,8 +19,8 @@ int main(int argc, char* argv[]){
 				printf("M3 :: Result for \"%s\": correct!\n", argv[i]);
 				}else{
 					printf("M3 :: Result for \"%s\": not correct!\n", argv[i]);
-				}	
-			} 
+				}
+			}
 		}
 	}
 	return 0;
@@ -31,7 +32,7 @@ bool M_3(char *u){
 	int i; // i tem de ser inicializado fora do for em C
 
 	for(i=0; i<length-2; i++){ //o ultimo caracter não interessa
-		if(u[i]=='a'){ 
+		if(u[i]=='a'){
 			if(u[i+1]=='b'){
 				if(u[i+2]=='a'){
 					found++;

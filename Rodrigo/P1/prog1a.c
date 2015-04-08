@@ -1,3 +1,4 @@
+/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -39,9 +40,9 @@ bool M_1(char* u){
 			act = u[i];
 			j = 0;
 		}
-		
+
 	}
 	return false;
 
-	
+
 }

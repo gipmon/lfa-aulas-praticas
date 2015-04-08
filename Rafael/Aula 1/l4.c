@@ -1,3 +1,4 @@
+/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,8 +19,8 @@ int main(int argc, char* argv[]){
 				printf("M4 :: Result for \"%s\": correct!\n", argv[i]);
 				}else{
 					printf("M4 :: Result for \"%s\": not correct!\n", argv[i]);
-				}	
-			} 
+				}
+			}
 		}
 	}
 	return 0;

@@ -1,3 +1,4 @@
+/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdbool.h>
 #include <string.h>
 
