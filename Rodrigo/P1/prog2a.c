@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -32,7 +31,7 @@ int main(int argc, char* argv[]){
 			if(M_5(argv[i])){
 				printf("L5 - True\n");
 			}else printf("L5 - False\n");
-
+			
 		}
 	}
 
@@ -90,7 +89,7 @@ bool M_5(char* u){
 		if(u[i] == 'a' && u[i+1] == 'b' && u[i+2] == 'c') abc_cont++;
 		else if(u[i] == 'c' && u[i+1] == 'a') ca_cont++;
 		else if(u[i] == 'c' && u[i+1] == 'b') cb_cont++;
-	}
+	} 
 
 	if(abc_cont >= (ca_cont + cb_cont)) return true;
 

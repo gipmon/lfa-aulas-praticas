@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<style>
+		span {font-size:large;}
+		span.keyword {color:#f92772;}
+		span.number {color:yellow;}
+		span.var_names {color:orange;}
+		span.normal {color:white;}
+		span.directive {color:#f9276f;}
+		span.comments {color:#75715e;}
+		span.type_values {color:#66d9ef;}
+		span.constant {color:yellow;}
+		span.string {color:grey;}
+	</style>
+</head>
+
+<body style="background-color: #272822">
+<pre>
+<span class="comments">/*******************************************************************************
+
+ Programa gráfico de simulação da funcionalidade do TDA Set
+
+
+ Autor : António Manuel Adrego da Rocha    Data : Março de 2013
+
+*******************************************************************************/</span>
+
+<span class="directive">#include</span> &lt;<span class="var_names">stdio</span>.<span class="var_names">h</span>&gt;
+<span class="directive">#include</span> &lt;<span class="var_names">stdlib</span>.<span class="var_names">h</span>&gt;
+<span class="directive">#include</span> &lt;<span class="var_names">string</span>.<span class="var_names">h</span>&gt;
+<span class="directive">#include</span> &lt;<span class="var_names">ctype</span>.<span class="var_names">h</span>&gt;
+
+<span class="directive">#include</span> "<span class="var_names">set</span>.<span class="var_names">h</span>"  <span class="comments">/* Ficheiro de interface do tipo de dados */</span>
+
+<span class="directive">#define</span> <span class="constant">MAX_SETS</span> <span class="var_names">14</span> 
+<span class="directive">#define</span> <span class="constant">MAX_OPTIONS</span> <span class="var_names">11</span>
+
+<span class="var_names">void</span> <span class="var_names">Menu</span> (<span class="var_names">void</span>);
+<span class="var_names">void</span> <span class="var_names">ReadOption</span> (<span class="type_values">int</span> *);
+<span class="var_names">void</span> <span class="var_names">ReadSetIndex</span> (<span class="type_values">int</span> *, <span class="type_values">char</span> *);
+<span class="type_values">int</span> <span class="var_names">ActiveSet</span> (<span class="var_names">PtSet</span> *, <span class="type_values">int</span>);
+<span class="type_values">int</span> <span class="var_names">NotActiveSet</span> (<span class="var_names">PtSet</span> *, <span class="type_values">int</span>);
+<span class="var_names">void</span> <span class="var_names">ReadFileName</span> (<span class="type_values">char</span> *);
+<span class="var_names">void</span> <span class="var_names">WriteErrorMessage</span> (<span class="type_values">char</span> *);
+<span class="var_names">void</span> <span class="var_names">ReadElement</span> (<span class="type_values">char</span> *);
+<span class="var_names">void</span> <span class="var_names">ReadNextInquiry</span> (<span class="type_values">char</span> *, <span class="type_values">char</span> *);
+<span class="var_names">PtSet</span> <span class="var_names">ReadSet</span> (<span class="var_names">void</span>);
+<span class="var_names">void</span> <span class="var_names">WriteSet</span> (<span class="var_names">PtSet</span>);
+
+<span class="type_values">int</span> <span class="var_names">main</span> (<span class="var_names">void</span>)
+{
+  <span class="var_names">PtSet</span> <span class="var_names">SetArray</span>[<span class="constant">MAX_SETS</span>];
+  <span class="type_values">int</span> <span class="var_names">Option</span>, <span class="var_names">Index</span>, <span class="var_names">Set1</span>, <span class="var_names">Set2</span>, <span class="var_names">Set3</span>, <span class="var_names">Equals</span>;
+  <span class="type_values">char</span> <span class="var_names">FileName</span>[<span class="var_names">21</span>], <span class="var_names">Character</span>;
+
+  <span class="keyword">for</span> (<span class="var_names">Index</span> = <span class="var_names">0</span>; <span class="var_names">Index</span> &lt; <span class="constant">MAX_SETS</span>; <span class="var_names">Index</span>++) <span class="var_names">SetArray</span>[<span class="var_names">Index</span>] = <span class="constant">NULL</span>;
+  
+  <span class="keyword">do</span>
+  {
+    <span class="comments">/* limpar o ecran e apresentar menu */</span>
+    <span class="var_names">Menu</span> ();
+
+    <span class="comments">/* limpar o erro entretanto ocorrido */</span>
+    <span class="var_names">SetClearError</span> ();
+
+    <span class="comments">/* apresentar os conjuntos activos */</span>
+    <span class="keyword">for</span> (<span class="var_names">Index</span> = <span class="var_names">0</span>; <span class="var_names">Index</span> &lt; <span class="constant">MAX_SETS</span>; <span class="var_names">Index</span>++)
+      <span class="keyword">if</span> (<span class="var_names">SetArray</span>[<span class="var_names">Index</span>] != <span class="constant">NULL</span>)
+      {
+        <span class="var_names">printf</span> ("\<span class="constant">e</span>[<span class="var_names">1m</span>\<span class="constant">e</span>[%<span class="var_names">d</span>;<span class="var_names">47f</span>", <span class="var_names">5</span>+<span class="var_names">Index</span>); <span class="var_names">WriteSet</span> (<span class="var_names">SetArray</span>[<span class="var_names">Index</span>]);
+        <span class="var_names">printf</span> ("\<span class="constant">e</span>[<span class="var_names">0m</span>");
+      }
+
+    <span class="comments">/* ler opcao do utilizador */</span>
+    <span class="var_names">ReadOption</span> (&amp;<span class="var_names">Option</span>);
+
+    <span class="keyword">switch</span> (<span class="var_names">Option</span>)
+    {
+        <span class="keyword">case</span> <span class="var_names">1</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span>");
+                  <span class="keyword">if</span> (<span class="var_names">ActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">SetArray</span>[<span class="var_names">Set1</span>] = <span class="var_names">ReadSet</span> ();
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">criacao</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">2</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span>");
+                  <span class="keyword">if</span> (<span class="var_names">ActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">ReadFileName</span> (<span class="var_names">FileName</span>);
+                  <span class="var_names">SetArray</span>[<span class="var_names">Set1</span>] = <span class="var_names">SetCreateFile</span> (<span class="var_names">FileName</span>);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">leitura</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">3</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span>");
+                  <span class="keyword">if</span> (<span class="var_names">NotActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="keyword">do</span>
+                  {
+                    <span class="var_names">ReadElement</span> (&amp;<span class="var_names">Character</span>);
+                    <span class="keyword">if</span> (<span class="var_names">Character</span> != '#')
+                    {
+                      <span class="var_names">SetClearError</span> ();
+                      <span class="var_names">SetInsertElement</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">Character</span>);
+                      <span class="keyword">if</span> (<span class="var_names">SetError</span> ())
+                      {
+                        <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">insercao</span>");
+                        <span class="keyword">if</span> (<span class="var_names">SetError</span> () == <span class="constant">NO_MEM</span>) <span class="keyword">break</span>;
+                      }
+                    }
+                    <span class="var_names">ReadNextInquiry</span> (&amp;<span class="var_names">Character</span>, "<span class="var_names">inserir</span>");
+                  } <span class="keyword">while</span> (<span class="var_names">Character</span> == '<span class="constant">S</span>');
+                  <span class="keyword">break</span>;
+          
+        <span class="keyword">case</span> <span class="var_names">4</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span>");
+                  <span class="keyword">if</span> (<span class="var_names">NotActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="keyword">do</span>
+                  {
+                    <span class="var_names">ReadElement</span> (&amp;<span class="var_names">Character</span>);
+                    <span class="keyword">if</span> (<span class="var_names">Character</span> != '#')
+                    {
+                      <span class="var_names">SetClearError</span> ();
+                      <span class="var_names">SetDeleteElement</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">Character</span>);
+                      <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">remocao</span>");
+                    }
+                    <span class="var_names">ReadNextInquiry</span> (&amp;<span class="var_names">Character</span>, "<span class="var_names">retirar</span>");
+                  } <span class="keyword">while</span> (<span class="var_names">Character</span> == '<span class="constant">S</span>');
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">5</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">primeiro</span> <span class="var_names">conjunto</span>");
+                  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set2</span>, "<span class="var_names">segundo</span> <span class="var_names">conjunto</span>");
+                  <span class="keyword">do</span>
+                  {
+                      <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set3</span>, "<span class="var_names">conjunto</span> <span class="var_names">reuniao</span>");
+                  } <span class="keyword">while</span> (<span class="var_names">Set3</span> == <span class="var_names">Set1</span> || <span class="var_names">Set3</span> == <span class="var_names">Set2</span>);
+                  <span class="keyword">if</span> (<span class="var_names">ActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set3</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">SetArray</span>[<span class="var_names">Set3</span>] = <span class="var_names">SetReunion</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">SetArray</span>[<span class="var_names">Set2</span>]);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">reuniao</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">6</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">primeiro</span> <span class="var_names">conjunto</span>");
+                  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set2</span>, "<span class="var_names">segundo</span> <span class="var_names">conjunto</span>");
+                  <span class="keyword">do</span>
+                  {
+                      <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set3</span>, "<span class="var_names">conjunto</span> <span class="var_names">interseccao</span>");
+                  } <span class="keyword">while</span> (<span class="var_names">Set3</span> == <span class="var_names">Set1</span> || <span class="var_names">Set3</span> == <span class="var_names">Set2</span>);
+                  <span class="keyword">if</span> (<span class="var_names">ActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set3</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">SetArray</span>[<span class="var_names">Set3</span>] = <span class="var_names">SetIntersection</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">SetArray</span>[<span class="var_names">Set2</span>]);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">interseccao</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">7</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">primeiro</span> <span class="var_names">conjunto</span>");
+                  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set2</span>, "<span class="var_names">segundo</span> <span class="var_names">conjunto</span>");
+                  <span class="keyword">do</span>
+                  {
+                      <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set3</span>, "<span class="var_names">conjunto</span> <span class="var_names">diferenca</span> <span class="var_names">simetrica</span>");
+                  } <span class="keyword">while</span> (<span class="var_names">Set3</span> == <span class="var_names">Set1</span> || <span class="var_names">Set3</span> == <span class="var_names">Set2</span>);
+                  <span class="keyword">if</span> (<span class="var_names">ActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set3</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">SetArray</span>[<span class="var_names">Set3</span>] = <span class="var_names">SetSymmetricDifference</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">SetArray</span>[<span class="var_names">Set2</span>]);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">diferenca</span> <span class="var_names">simetrica</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">8</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">primeiro</span> <span class="var_names">conjunto</span>");
+                  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set2</span>, "<span class="var_names">segundo</span> <span class="var_names">conjunto</span>");
+                  <span class="var_names">Equals</span> = <span class="var_names">SetEquals</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">SetArray</span>[<span class="var_names">Set2</span>]);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">comparacao</span>");
+                  <span class="keyword">else</span>
+                  {
+                    <span class="keyword">if</span> (<span class="var_names">Equals</span>) <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">25</span>;<span class="var_names">1f</span>| \<span class="constant">e</span>[<span class="var_names">1mOs</span> <span class="var_names">conjuntos</span> %<span class="var_names">d</span> <span class="constant">e</span> %<span class="var_names">d</span> <span class="var_names">sao</span> <span class="var_names">iguais</span>", <span class="var_names">Set1</span>, <span class="var_names">Set2</span>);
+                    <span class="keyword">else</span> <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">25</span>;<span class="var_names">1f</span>| \<span class="constant">e</span>[<span class="var_names">1mOs</span> <span class="var_names">conjuntos</span> %<span class="var_names">d</span> <span class="constant">e</span> %<span class="var_names">d</span> <span class="var_names">nao</span> <span class="var_names">sao</span> <span class="var_names">iguais</span>", <span class="var_names">Set1</span>, <span class="var_names">Set2</span>);
+                    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">0m</span>\<span class="constant">e</span>[<span class="var_names">26</span>;<span class="var_names">1f</span>| <span class="var_names">Prima</span> <span class="var_names">uma</span> <span class="var_names">tecla</span> <span class="var_names">para</span> <span class="var_names">continuar</span> ");
+                    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+                  }
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">9</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span> <span class="var_names">origem</span>");
+                  <span class="keyword">if</span> (<span class="var_names">NotActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="keyword">do</span>
+                  {
+                      <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set2</span>, "<span class="var_names">conjunto</span> <span class="var_names">destino</span>");
+                  } <span class="keyword">while</span> (<span class="var_names">Set2</span> == <span class="var_names">Set1</span>);
+                  <span class="keyword">if</span> (<span class="var_names">ActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set2</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">SetArray</span>[<span class="var_names">Set2</span>] = <span class="var_names">SetCopy</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>]);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">copia</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">10</span> :  <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span>");
+                  <span class="keyword">if</span> (<span class="var_names">NotActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">ReadFileName</span> (<span class="var_names">FileName</span>);
+                  <span class="var_names">SetStoreFile</span> (<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>], <span class="var_names">FileName</span>);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">O</span> <span class="var_names">armazenamento</span>");
+                  <span class="keyword">break</span>;
+
+        <span class="keyword">case</span> <span class="var_names">11</span> : <span class="var_names">ReadSetIndex</span> (&amp;<span class="var_names">Set1</span>, "<span class="var_names">conjunto</span>");
+                  <span class="keyword">if</span> (<span class="var_names">NotActiveSet</span> (<span class="var_names">SetArray</span>, <span class="var_names">Set1</span>)) <span class="keyword">break</span>;
+                  <span class="var_names">SetDestroy</span> (&amp;<span class="var_names">SetArray</span>[<span class="var_names">Set1</span>]);
+                  <span class="keyword">if</span> (<span class="var_names">SetError</span> ()) <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">eliminacao</span>");
+                  <span class="keyword">break</span>;
+    }
+
+  } <span class="keyword">while</span> (<span class="var_names">Option</span> != <span class="var_names">0</span>);
+
+  <span class="keyword">for</span> (<span class="var_names">Index</span> = <span class="var_names">0</span>; <span class="var_names">Index</span> &lt; <span class="constant">MAX_SETS</span>; <span class="var_names">Index</span>++) 
+    <span class="keyword">if</span> (<span class="var_names">SetArray</span>[<span class="var_names">Index</span>] != <span class="constant">NULL</span>) <span class="var_names">SetDestroy</span> (&amp;<span class="var_names">SetArray</span>[<span class="var_names">Index</span>]);
+
+  <span class="var_names">printf</span> ("\<span class="constant">e</span>[<span class="var_names">29</span>;<span class="var_names">1f</span>");
+
+  <span class="keyword">return</span> <span class="var_names">0</span>;
+}
+
+<span class="var_names">void</span> <span class="var_names">Menu</span> (<span class="var_names">void</span>)
+{
+  <span class="var_names">system</span> ("<span class="var_names">clear</span>");
+
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">2</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">3</span>;<span class="var_names">1f</span>|                       <span class="var_names">Programa</span> <span class="var_names">Grafico</span> <span class="var_names">Para</span> <span class="var_names">Simular</span> <span class="var_names">Operacoes</span> <span class="var_names">Sobre</span> <span class="var_names">Conjuntos</span>                        |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">4</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">5</span>;<span class="var_names">1f</span>|  <span class="var_names">1</span> - <span class="var_names">Ler</span> <span class="var_names">um</span> <span class="var_names">conjunto</span> (<span class="var_names">teclado</span>)  | <span class="var_names">Conjunto</span>  <span class="var_names">0</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">6</span>;<span class="var_names">1f</span>|  <span class="var_names">2</span> - <span class="var_names">Ler</span> <span class="var_names">um</span> <span class="var_names">conjunto</span> (<span class="var_names">ficheiro</span>) | <span class="var_names">Conjunto</span>  <span class="var_names">1</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">7</span>;<span class="var_names">1f</span>|  <span class="var_names">3</span> - <span class="var_names">Inserir</span> <span class="var_names">elemento</span>           | <span class="var_names">Conjunto</span>  <span class="var_names">2</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">8</span>;<span class="var_names">1f</span>|  <span class="var_names">4</span> - <span class="var_names">Retirar</span> <span class="var_names">elemento</span>           | <span class="var_names">Conjunto</span>  <span class="var_names">3</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">9</span>;<span class="var_names">1f</span>|  <span class="var_names">5</span> - <span class="var_names">Reuniao</span> <span class="var_names">de</span> <span class="var_names">conjuntos</span>       | <span class="var_names">Conjunto</span>  <span class="var_names">4</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">10</span>;<span class="var_names">1f</span>|  <span class="var_names">6</span> - <span class="var_names">Interseccao</span> <span class="var_names">de</span> <span class="var_names">conjuntos</span>   | <span class="var_names">Conjunto</span>  <span class="var_names">5</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">11</span>;<span class="var_names">1f</span>|  <span class="var_names">7</span> - <span class="var_names">Diferen</span>ç<span class="var_names">a</span> <span class="var_names">de</span> <span class="var_names">conjuntos</span>     | <span class="var_names">Conjunto</span>  <span class="var_names">6</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">12</span>;<span class="var_names">1f</span>|  <span class="var_names">8</span> - <span class="var_names">Comparar</span> <span class="var_names">conjuntos</span>         | <span class="var_names">Conjunto</span>  <span class="var_names">7</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">13</span>;<span class="var_names">1f</span>|  <span class="var_names">9</span> - <span class="var_names">Copiar</span> <span class="var_names">um</span> <span class="var_names">conjunto</span>         | <span class="var_names">Conjunto</span>  <span class="var_names">8</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">14</span>;<span class="var_names">1f</span>| <span class="var_names">10</span> - <span class="var_names">Armazenar</span> <span class="var_names">um</span> <span class="var_names">conjunto</span>      | <span class="var_names">Conjunto</span>  <span class="var_names">9</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">15</span>;<span class="var_names">1f</span>| <span class="var_names">11</span> - <span class="var_names">Apagar</span> <span class="var_names">um</span> <span class="var_names">conjunto</span>         | <span class="var_names">Conjunto</span> <span class="var_names">10</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">16</span>;<span class="var_names">1f</span>|  <span class="var_names">0</span> - <span class="var_names">Terminar</span> <span class="var_names">o</span> <span class="var_names">programa</span>        | <span class="var_names">Conjunto</span> <span class="var_names">11</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">17</span>;<span class="var_names">1f</span>|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| <span class="var_names">Conjunto</span> <span class="var_names">12</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">18</span>;<span class="var_names">1f</span>| <span class="var_names">Opcao</span> -&gt;                        | <span class="var_names">Conjunto</span> <span class="var_names">13</span> =                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">19</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">20</span>;<span class="var_names">1f</span>|                                     <span class="var_names">Janela</span> <span class="var_names">de</span> <span class="var_names">Aquisicao</span> <span class="var_names">de</span> <span class="var_names">Dados</span>                                     |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">21</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">1f</span>|                                                                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">23</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">24</span>;<span class="var_names">1f</span>|                              <span class="var_names">Janela</span> <span class="var_names">de</span> <span class="var_names">Mensagens</span> <span class="var_names">de</span> <span class="var_names">Erro</span> <span class="constant">e</span> <span class="var_names">de</span> <span class="var_names">Resultados</span>                             |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">25</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">26</span>;<span class="var_names">1f</span>|                                                                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">27</span>;<span class="var_names">1f</span>|                                                                                                      |\<span class="var_names">n</span>");
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">28</span>;<span class="var_names">1f</span>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\<span class="var_names">n</span>");
+}
+
+<span class="var_names">void</span> <span class="var_names">ReadOption</span> (<span class="type_values">int</span> *<span class="var_names">poption</span>)
+{
+  <span class="keyword">do</span>
+  {  
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">18</span>;<span class="var_names">1f</span>| <span class="var_names">Opcao</span> -&gt;                        |");
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">18</span>;<span class="var_names">12f</span>"); <span class="var_names">scanf</span> ("%<span class="var_names">d</span>", <span class="var_names">poption</span>);
+    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+  } <span class="keyword">while</span> (*<span class="var_names">poption</span> &lt; <span class="var_names">0</span> || *<span class="var_names">poption</span> &gt; <span class="constant">MAX_OPTIONS</span>);
+}
+
+<span class="var_names">void</span> <span class="var_names">ReadSetIndex</span> (<span class="type_values">int</span> *<span class="var_names">pns</span>, <span class="type_values">char</span> *<span class="var_names">pmsg</span>)
+{
+  <span class="type_values">int</span> <span class="var_names">MsgLen</span> = <span class="var_names">strlen</span> (<span class="var_names">pmsg</span>);
+
+  <span class="keyword">do</span>
+  {
+    *<span class="var_names">pns</span> = -<span class="var_names">1</span>;
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">1f</span>| <span class="var_names">Indice</span> <span class="keyword">do</span> %<span class="var_names">s</span> -&gt;                               ", <span class="var_names">pmsg</span>);
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;%<span class="var_names">df</span>", <span class="var_names">17</span>+<span class="var_names">MsgLen</span>); <span class="var_names">scanf</span> ("%<span class="var_names">d</span>", <span class="var_names">pns</span>);
+    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+  } <span class="keyword">while</span> (*<span class="var_names">pns</span> &lt; <span class="var_names">0</span> || *<span class="var_names">pns</span> &gt;= <span class="constant">MAX_SETS</span>);
+}
+
+<span class="type_values">int</span> <span class="var_names">ActiveSet</span> (<span class="var_names">PtSet</span> <span class="var_names">psetarray</span>[], <span class="type_values">int</span> <span class="var_names">pnset</span>)
+{
+  <span class="type_values">char</span> <span class="var_names">Character</span>;
+
+  <span class="keyword">if</span> (<span class="var_names">psetarray</span>[<span class="var_names">pnset</span>] != <span class="constant">NULL</span>)
+  {
+    <span class="keyword">do</span>
+    {
+      <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">1m</span>\<span class="constant">e</span>[<span class="var_names">26</span>;<span class="var_names">1f</span>| <span class="constant">O</span> <span class="var_names">conjunto</span> %<span class="var_names">d</span> <span class="var_names">ja</span> <span class="var_names">existe</span>!                     ", <span class="var_names">pnset</span>);
+      <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">0m</span>\<span class="constant">e</span>[<span class="var_names">27</span>;<span class="var_names">1f</span>| <span class="var_names">Deseja</span> <span class="var_names">apaga</span>-<span class="var_names">lo</span> (<span class="var_names">s</span>/<span class="var_names">n</span>)? ");
+      <span class="var_names">scanf</span> ("%<span class="var_names">c</span>", &amp;<span class="var_names">Character</span>); <span class="var_names">Character</span> = <span class="var_names">tolower</span> (<span class="var_names">Character</span>);
+      <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+    } <span class="keyword">while</span> (<span class="var_names">Character</span> != '<span class="var_names">n</span>' &amp;&amp; <span class="var_names">Character</span> != '<span class="var_names">s</span>');
+
+    <span class="keyword">if</span> (<span class="var_names">Character</span> == '<span class="var_names">s</span>') { <span class="var_names">SetDestroy</span> (&amp;<span class="var_names">psetarray</span>[<span class="var_names">pnset</span>]); <span class="keyword">return</span> <span class="var_names">0</span>; }
+    <span class="keyword">else</span>  <span class="keyword">return</span> <span class="var_names">1</span>;
+  }
+  <span class="keyword">else</span> <span class="keyword">return</span> <span class="var_names">0</span>;
+}
+
+<span class="type_values">int</span> <span class="var_names">NotActiveSet</span> (<span class="var_names">PtSet</span> <span class="var_names">psetarray</span>[], <span class="type_values">int</span> <span class="var_names">pnset</span>)
+{
+  <span class="keyword">if</span> (<span class="var_names">psetarray</span>[<span class="var_names">pnset</span>] == <span class="constant">NULL</span>)
+  {
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">1m</span>\<span class="constant">e</span>[<span class="var_names">26</span>;<span class="var_names">1f</span>| <span class="constant">O</span> <span class="var_names">conjunto</span> %<span class="var_names">d</span> <span class="var_names">nao</span> <span class="var_names">existe</span>!                     ", <span class="var_names">pnset</span>);
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">0m</span>\<span class="constant">e</span>[<span class="var_names">27</span>;<span class="var_names">1f</span>| <span class="var_names">Prima</span> <span class="var_names">uma</span> <span class="var_names">tecla</span> <span class="var_names">para</span> <span class="var_names">continuar</span> ");
+    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+    <span class="keyword">return</span> <span class="var_names">1</span>;
+  }
+  <span class="keyword">else</span> <span class="keyword">return</span> <span class="var_names">0</span>;
+}
+
+<span class="var_names">void</span> <span class="var_names">ReadFileName</span> (<span class="type_values">char</span> *<span class="var_names">pfname</span>)
+{
+  <span class="type_values">int</span> <span class="var_names">Status</span>;
+
+  <span class="keyword">do</span>
+  {
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">1f</span>| <span class="var_names">Nome</span> <span class="keyword">do</span> <span class="var_names">ficheiro</span> -&gt;                               ");
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">23f</span>"); <span class="var_names">Status</span> = <span class="var_names">scanf</span> ("%<span class="var_names">20</span>[<span class="constant">^</span>\<span class="var_names">n</span>]", <span class="var_names">pfname</span>);
+    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+  } <span class="keyword">while</span> (<span class="var_names">Status</span> == <span class="var_names">0</span>);
+}
+
+<span class="var_names">void</span> <span class="var_names">WriteErrorMessage</span> (<span class="type_values">char</span> *<span class="var_names">pmsg</span>)
+{
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">26</span>;<span class="var_names">1f</span>| %<span class="var_names">s</span> <span class="var_names">de</span> <span class="var_names">conjuntos</span> <span class="var_names">nao</span> <span class="var_names">foi</span> <span class="var_names">efectuada</span> <span class="var_names">devido</span> <span class="var_names">a</span> -&gt; \<span class="constant">e</span>[<span class="var_names">1m</span>%<span class="var_names">s</span>", <span class="var_names">pmsg</span>, <span class="var_names">SetErrorMessage</span> ());
+  <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">0m</span>\<span class="constant">e</span>[<span class="var_names">27</span>;<span class="var_names">1f</span>| <span class="var_names">Prima</span> <span class="var_names">uma</span> <span class="var_names">tecla</span> <span class="var_names">para</span> <span class="var_names">continuar</span> ");
+  <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+}
+
+<span class="var_names">void</span> <span class="var_names">ReadElement</span> (<span class="type_values">char</span> *<span class="var_names">pc</span>)
+{
+  <span class="keyword">do</span>
+  {
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">1f</span>| <span class="var_names">Elemento</span> <span class="var_names">para</span> <span class="var_names">o</span> <span class="var_names">conjunto</span> [<span class="constant">A</span>-<span class="constant">Z</span> <span class="var_names">ou</span> <span class="directive"># para</span> <span class="var_names">terminar</span>] -&gt;                               ");
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">56f</span>"); <span class="var_names">scanf</span> ("%<span class="var_names">c</span>", <span class="var_names">pc</span>); *<span class="var_names">pc</span> = <span class="var_names">toupper</span> (*<span class="var_names">pc</span>);
+    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+  } <span class="keyword">while</span> ((*<span class="var_names">pc</span> &lt; '<span class="constant">A</span>' || *<span class="var_names">pc</span> &gt; '<span class="constant">Z</span>') &amp;&amp; (*<span class="var_names">pc</span> != '#'));
+}
+
+<span class="var_names">void</span> <span class="var_names">ReadNextInquiry</span> (<span class="type_values">char</span> *<span class="var_names">pcar</span>, <span class="type_values">char</span> *<span class="var_names">pmsg</span>)
+{
+  <span class="keyword">do</span>
+  {
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">1f</span>| <span class="var_names">Deseja</span> %<span class="var_names">s</span> <span class="var_names">mais</span> <span class="var_names">algum</span> <span class="var_names">elemento</span> <span class="keyword">do</span> <span class="var_names">conjunto</span> (<span class="var_names">s</span>/<span class="var_names">n</span>)?           ", <span class="var_names">pmsg</span>);
+    <span class="var_names">printf</span>("\<span class="constant">e</span>[<span class="var_names">22</span>;<span class="var_names">57f</span>"); <span class="var_names">scanf</span> ("%<span class="var_names">c</span>", <span class="var_names">pcar</span>); *<span class="var_names">pcar</span> = <span class="var_names">toupper</span> (*<span class="var_names">pcar</span>);
+    <span class="var_names">scanf</span> ("%*[<span class="constant">^</span>\<span class="var_names">n</span>]"); <span class="var_names">scanf</span> ("%*<span class="var_names">c</span>");
+  } <span class="keyword">while</span> (*<span class="var_names">pcar</span> != '<span class="constant">N</span>' &amp;&amp; *<span class="var_names">pcar</span> != '<span class="constant">S</span>');
+}
+
+<span class="var_names">PtSet</span> <span class="var_names">ReadSet</span> (<span class="var_names">void</span>)
+{
+  <span class="var_names">PtSet</span> <span class="var_names">Set</span>; <span class="type_values">char</span> <span class="var_names">Character</span>;
+    
+  <span class="keyword">if</span> ((<span class="var_names">Set</span> = <span class="var_names">SetCreate</span> ()) == <span class="constant">NULL</span>) <span class="keyword">return</span> <span class="constant">NULL</span>;
+
+  <span class="var_names">ReadElement</span> (&amp;<span class="var_names">Character</span>);
+  <span class="keyword">while</span> (<span class="var_names">Character</span> != '#')
+  {
+    <span class="var_names">SetInsertElement</span> (<span class="var_names">Set</span>, <span class="var_names">Character</span>);
+    <span class="keyword">if</span> (<span class="var_names">SetError</span> ())
+    {
+      <span class="var_names">WriteErrorMessage</span> ("<span class="constant">A</span> <span class="var_names">insercao</span>");
+      <span class="keyword">if</span> (<span class="var_names">SetError</span> () == <span class="constant">NO_MEM</span>) <span class="keyword">break</span>;
+    }
+    <span class="var_names">ReadElement</span> (&amp;<span class="var_names">Character</span>);
+  }
+
+  <span class="keyword">return</span> <span class="var_names">Set</span>;  <span class="comments">/* devolve o conjunto criado */</span>
+}
+
+<span class="var_names">void</span> <span class="var_names">WriteSet</span> (<span class="var_names">PtSet</span> <span class="var_names">pset</span>)
+{
+  <span class="type_values">unsigned</span> <span class="type_values">int</span> <span class="var_names">Cardinal</span>, <span class="constant">I</span>; 
+
+  <span class="keyword">if</span> (<span class="var_names">pset</span> == <span class="constant">NULL</span>) <span class="keyword">return</span>;  <span class="comments">/* verifica se o conjunto existe */</span>
+
+  <span class="var_names">Cardinal</span> = <span class="var_names">SetCardinal</span> (<span class="var_names">pset</span>);
+
+  <span class="var_names">printf</span> ("{ ");
+  <span class="comments">/* escrita dos elementos do conjunto */</span>
+  <span class="keyword">for</span> (<span class="constant">I</span> = <span class="var_names">1</span>; <span class="constant">I</span> &lt;= <span class="var_names">Cardinal</span>; <span class="constant">I</span>++) <span class="var_names">printf</span> ("%<span class="var_names">c</span> ", <span class="var_names">SetObserveElement</span> (<span class="var_names">pset</span>, <span class="constant">I</span>));
+  <span class="var_names">printf</span> ("}\<span class="var_names">n</span>");
+}
+
+</pre>
+</body>

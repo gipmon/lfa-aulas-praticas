@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,8 +20,8 @@ int main(int argc, char* argv[]){
 				printf("M5 :: Result for \"%s\": correct!\n", argv[i]);
 				}else{
 					printf("M5 :: Result for \"%s\": not correct!\n", argv[i]);
-				}
-			}
+				}	
+			} 
 		}
 	}
 	return 0;
@@ -32,7 +31,7 @@ bool M_5(char *u){
 	int abc_found = 0; // number of "b" found
 	int ca_cb_found = 0; // number of "a" found
 	int length = strlen(u); // length da palavra passada como argumento
-
+	
 	for(; u[0]!='\0'; *u++){
 		if(u[0]=='a' && u[1]!='\0' && u[1]=='b' && u[2]!='\0' && u[2]=='c'){
 			abc_found++;

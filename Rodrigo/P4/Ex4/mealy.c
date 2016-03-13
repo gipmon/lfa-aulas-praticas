@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdbool.h>
 #include <string.h>
 
@@ -55,3 +54,4 @@ void mealy(const char* u, char* v)
 
 	v[i] = '\0';
 }
+

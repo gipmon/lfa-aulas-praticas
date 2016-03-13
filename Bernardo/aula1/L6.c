@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +31,7 @@ int main(int argc, char* argv[])
 }
 
 bool M_6(char *u){
-
+    
     int len = strlen(u);
     int i,j,numA,numC;
     for (i = 0; i < len; i++)

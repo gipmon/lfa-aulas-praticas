@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #ifndef lfa1314_M_h
 #define lfa1314_M_h
 

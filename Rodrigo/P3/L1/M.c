@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdbool.h>
 #include <string.h>
 
@@ -39,9 +38,9 @@ static const int initialState = A;
 #define NAcceptStates 1
 
 /* the set of accept states */
-static const int acceptSet[NAcceptStates] =
-{
-    D
+static const int acceptSet[NAcceptStates] = 
+{ 
+    D 
 };
 
 bool M(const char* u)
@@ -59,3 +58,4 @@ bool M(const char* u)
     }
     return false;
 }
+

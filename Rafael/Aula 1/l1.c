@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,8 +18,8 @@ int main(int argc, char* argv[]){
 				printf("Result for \"%s\": correct!\n", argv[i]);
 				}else{
 					printf("Result for \"%s\": not correct!\n", argv[i]);
-				}
-			}
+				}	
+			} 
 		}
 	}
 	return 0;
@@ -36,12 +35,12 @@ bool M_1(char *u){
 		if(equal==u[i]){ // se o caracter (anterior) for igual ao atual
 			equal_characters--; // decrementa
 			if(equal_characters==1){ // já encontrou 3 caracteres
-				return true; // retorna verdadeiro
+				return true; // retorna verdadeiro 
 			}
 		}else{ // não é igual
 			equal_characters = 3; // vamos por a 3
 			equal = u[i]; // voltamos a por equal = u[i]
-		}
+		}	
 	}
 
 	return false;

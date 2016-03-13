@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

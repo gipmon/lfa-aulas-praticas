@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #ifndef __MEALY_H__
 #define __MEALY_H__
 

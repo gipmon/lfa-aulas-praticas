@@ -1,4 +1,3 @@
-/* https://github.com/gipmon/lfa-aulas-praticas */
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -38,3 +37,4 @@ int main(int argc, char* argv[])
     }
     return 0;
 }
+
